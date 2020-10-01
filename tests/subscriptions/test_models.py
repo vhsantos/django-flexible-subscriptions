@@ -154,7 +154,7 @@ def test_plan_cost_minimal_model_creation():
     )
 
     models.PlanCost.objects.create(
-        plan=plan,
+
         recurrence_period=1,
         recurrence_unit=models.SECOND,
         cost='1.00',
@@ -172,7 +172,7 @@ def test_plan_cost_display_recurrent_unit_text_0():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.ONCE
+        recurrence_unit=models.ONCE
     )
 
     assert cost.display_recurrent_unit_text == 'one-time'
@@ -187,7 +187,7 @@ def test_plan_cost_display_recurrent_unit_text_1():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.SECOND
+        recurrence_unit=models.SECOND
     )
 
     assert cost.display_recurrent_unit_text == 'per second'
@@ -202,7 +202,7 @@ def test_plan_cost_display_recurrent_unit_text_2():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.MINUTE
+        recurrence_unit=models.MINUTE
     )
 
     assert cost.display_recurrent_unit_text == 'per minute'
@@ -217,7 +217,7 @@ def test_plan_cost_display_recurrent_unit_text_3():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.HOUR
+        recurrence_unit=models.HOUR
     )
 
     assert cost.display_recurrent_unit_text == 'per hour'
@@ -232,7 +232,7 @@ def test_plan_cost_display_recurrent_unit_text_4():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.DAY
+        recurrence_unit=models.DAY
     )
 
     assert cost.display_recurrent_unit_text == 'per day'
@@ -247,7 +247,7 @@ def test_plan_cost_display_recurrent_unit_text_5():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.WEEK
+        recurrence_unit=models.WEEK
     )
 
     assert cost.display_recurrent_unit_text == 'per week'
@@ -262,7 +262,7 @@ def test_plan_cost_display_recurrent_unit_text_6():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.MONTH
+        recurrence_unit=models.MONTH
     )
 
     assert cost.display_recurrent_unit_text == 'per month'
@@ -277,7 +277,7 @@ def test_plan_cost_display_recurrent_unit_text_7():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_unit=models.YEAR
+        recurrence_unit=models.YEAR
     )
 
     assert cost.display_recurrent_unit_text == 'per year'
@@ -292,7 +292,7 @@ def test_plan_cost_display_billing_frequency_text_once_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.ONCE
+        recurrence_period=1, recurrence_unit=models.ONCE
     )
 
     assert cost.display_billing_frequency_text == 'one-time'
@@ -307,7 +307,7 @@ def test_plan_cost_display_billing_frequency_text_once_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.ONCE
+        recurrence_period=2, recurrence_unit=models.ONCE
     )
 
     assert cost.display_billing_frequency_text == 'one-time'
@@ -322,7 +322,7 @@ def test_plan_cost_display_billing_frequency_text_second_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.SECOND
+        recurrence_period=1, recurrence_unit=models.SECOND
     )
 
     assert cost.display_billing_frequency_text == 'per second'
@@ -337,7 +337,7 @@ def test_plan_cost_display_billing_frequency_text_second_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.SECOND
+        recurrence_period=2, recurrence_unit=models.SECOND
     )
 
     assert cost.display_billing_frequency_text == 'every 2 seconds'
@@ -352,7 +352,7 @@ def test_plan_cost_display_billing_frequency_text_minute_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.MINUTE
+        recurrence_period=1, recurrence_unit=models.MINUTE
     )
 
     assert cost.display_billing_frequency_text == 'per minute'
@@ -367,7 +367,7 @@ def test_plan_cost_display_billing_frequency_text_minute_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.MINUTE
+        recurrence_period=2, recurrence_unit=models.MINUTE
     )
 
     assert cost.display_billing_frequency_text == 'every 2 minutes'
@@ -382,7 +382,7 @@ def test_plan_cost_display_billing_frequency_text_hour_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.HOUR
+        recurrence_period=1, recurrence_unit=models.HOUR
     )
 
     assert cost.display_billing_frequency_text == 'per hour'
@@ -397,7 +397,7 @@ def test_plan_cost_display_billing_frequency_text_hour_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.HOUR
+        recurrence_period=2, recurrence_unit=models.HOUR
     )
 
     assert cost.display_billing_frequency_text == 'every 2 hours'
@@ -412,7 +412,7 @@ def test_plan_cost_display_billing_frequency_text_day_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.DAY
+        recurrence_period=1, recurrence_unit=models.DAY
     )
 
     assert cost.display_billing_frequency_text == 'per day'
@@ -427,7 +427,7 @@ def test_plan_cost_display_billing_frequency_text_day_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.DAY
+        recurrence_period=2, recurrence_unit=models.DAY
     )
 
     assert cost.display_billing_frequency_text == 'every 2 days'
@@ -442,7 +442,7 @@ def test_plan_cost_display_billing_frequency_text_week_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.WEEK
+        recurrence_period=1, recurrence_unit=models.WEEK
     )
 
     assert cost.display_billing_frequency_text == 'per week'
@@ -457,7 +457,7 @@ def test_plan_cost_display_billing_frequency_text_week_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.WEEK
+        recurrence_period=2, recurrence_unit=models.WEEK
     )
 
     assert cost.display_billing_frequency_text == 'every 2 weeks'
@@ -472,7 +472,7 @@ def test_plan_cost_display_billing_frequency_text_month_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.MONTH
+        recurrence_period=1, recurrence_unit=models.MONTH
     )
 
     assert cost.display_billing_frequency_text == 'per month'
@@ -487,7 +487,7 @@ def test_plan_cost_display_billing_frequency_text_month_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.MONTH
+        recurrence_period=2, recurrence_unit=models.MONTH
     )
 
     assert cost.display_billing_frequency_text == 'every 2 months'
@@ -502,7 +502,7 @@ def test_plan_cost_display_billing_frequency_text_year_singular():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.YEAR
+        recurrence_period=1, recurrence_unit=models.YEAR
     )
 
     assert cost.display_billing_frequency_text == 'per year'
@@ -517,7 +517,7 @@ def test_plan_cost_display_billing_frequency_text_year_plural():
     )
 
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=2, recurrence_unit=models.YEAR
+        recurrence_period=2, recurrence_unit=models.YEAR
     )
 
     assert cost.display_billing_frequency_text == 'every 2 years'
@@ -531,7 +531,7 @@ def test_plan_cost_next_billing_datetime_seconds():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.SECOND
+        recurrence_period=1, recurrence_unit=models.SECOND
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -547,7 +547,7 @@ def test_plan_cost_next_billing_datetime_minutes():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.MINUTE
+        recurrence_period=1, recurrence_unit=models.MINUTE
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -563,7 +563,7 @@ def test_plan_cost_next_billing_datetime_hours():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.HOUR
+        recurrence_period=1, recurrence_unit=models.HOUR
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -579,7 +579,7 @@ def test_plan_cost_next_billing_datetime_days():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.DAY
+        recurrence_period=1, recurrence_unit=models.DAY
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -595,7 +595,7 @@ def test_plan_cost_next_billing_datetime_weeks():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.WEEK
+        recurrence_period=1, recurrence_unit=models.WEEK
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -611,7 +611,7 @@ def test_plan_cost_next_billing_datetime_months():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.MONTH
+        recurrence_period=1, recurrence_unit=models.MONTH
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -627,7 +627,7 @@ def test_plan_cost_next_billing_datetime_12_months():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=12, recurrence_unit=models.MONTH
+        recurrence_period=12, recurrence_unit=models.MONTH
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -643,7 +643,7 @@ def test_plan_cost_next_billing_datetime_48_months():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=48, recurrence_unit=models.MONTH
+        recurrence_period=48, recurrence_unit=models.MONTH
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -659,7 +659,7 @@ def test_plan_cost_next_billing_datetime_years():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.YEAR
+        recurrence_period=1, recurrence_unit=models.YEAR
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -675,7 +675,7 @@ def test_plan_cost_next_billing_datetime_4_years():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=4, recurrence_unit=models.YEAR
+        recurrence_period=4, recurrence_unit=models.YEAR
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -691,7 +691,7 @@ def test_plan_cost_next_billing_datetime_once():
         plan_description='This is a test plan',
     )
     cost = models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.ONCE
+        recurrence_period=1, recurrence_unit=models.ONCE
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
     next_billing = cost.next_billing_datetime(current)
@@ -734,7 +734,7 @@ def test_plan_list_details_minimal_model_creation():
         title='Test Title',
     )
     models.PlanListDetail.objects.create(
-        plan=plan,
+
         plan_list=plan_list,
     )
 
@@ -752,7 +752,7 @@ def test_plan_list_details_str_():
         title='Test Title',
     )
     plan_list_details = models.PlanListDetail.objects.create(
-        plan=plan,
+
         plan_list=plan_list,
     )
 

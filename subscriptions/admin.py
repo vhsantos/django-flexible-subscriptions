@@ -5,16 +5,16 @@ from subscriptions import models
 from subscriptions.conf import SETTINGS
 
 
-class PlanCostInline(admin.TabularInline):
-    """Inline admin class for the PlanCost model."""
-    model = models.PlanCost
-    fields = (
-        'slug',
-        'recurrence_period',
-        'recurrence_unit',
-        'cost',
-    )
-    extra = 0
+# class PlanCostInline(admin.TabularInline):
+#     """Inline admin class for the PlanCost model."""
+#     model = models.PlanCost
+#     fields = (
+#         'slug',
+#         'recurrence_period',
+#         'recurrence_unit',
+#         'cost',
+#     )
+#     extra = 0
 
 
 class SubscriptionPlanAdmin(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
         'tags',
         'grace_period',
     )
-    inlines = [PlanCostInline]
+    # inlines = [PlanCostInline]
     list_display = (
         'plan_name',
         'group',

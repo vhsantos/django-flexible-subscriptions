@@ -24,7 +24,7 @@ def create_plan(plan_name='1', plan_description='2'):
 def create_plan_cost(plan, rec_period=1, rec_unit=models.MONTH, cost='1.00'):
     """Creates and returns a PlanCost instance."""
     return models.PlanCost.objects.create(
-        plan=plan,
+        # plan=plan,
         recurrence_period=rec_period,
         recurrence_unit=rec_unit,
         cost=cost,
@@ -624,7 +624,7 @@ def test_plan_update_invalid_cost_forms(admin_client):
         'costs-MIN_NUM_FORMS': '0',
         'costs-MAX_NUM_FORMS': '1000',
         'costs-0-id': plan_cost.id,
-        'costs-0-plan': plan_cost.plan.id,
+        # 'costs-0-plan': plan_cost.plan.id,
         'costs-0-recurrence_period': 'a',
         'costs-0-recurrence_unit': plan_cost.recurrence_unit,
         'costs-0-cost': plan_cost.cost,

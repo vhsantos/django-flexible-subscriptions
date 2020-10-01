@@ -18,9 +18,12 @@ def create_plan(plan_name='1', plan_description='2'):
 
 def create_cost(plan=None, period=1, unit=models.MONTH, cost='1.00'):
     """Creates and returns PlanCost instance."""
-    return models.PlanCost.objects.create(
-        plan=plan, recurrence_period=period, recurrence_unit=unit, cost=cost
+    pc = models.PlanCost.objects.create(
+        recurrence_period=period, recurrence_unit=unit, cost=cost
     )
+    if plan:
+        pc.plans.add(plan)
+    return pc
 
 
 def create_subscription(user, cost):

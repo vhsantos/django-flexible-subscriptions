@@ -120,10 +120,9 @@ class PlanCost(models.Model):
         primary_key=True,
         verbose_name='ID',
     )
-    plan = models.ForeignKey(
+    plans = models.ManyToManyField(
         SubscriptionPlan,
         help_text=_('the subscription plan for these cost details'),
-        on_delete=models.CASCADE,
         related_name='costs',
     )
     slug = models.SlugField(
