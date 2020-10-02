@@ -122,6 +122,8 @@ class PlanCost(models.Model):
     )
     plans = models.ManyToManyField(
         SubscriptionPlan,
+        blank=True,
+        null=True,
         help_text=_('the subscription plan for these cost details'),
         related_name='costs',
     )

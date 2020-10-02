@@ -24,7 +24,18 @@ class SubscriptionPlanFactory(factory.django.DjangoModelFactory):
     plan_name = factory.Sequence(lambda n: 'Plan {}'.format(n))
     plan_description = factory.Sequence(lambda n: 'Description {}'.format(n))
     grace_period = factory.sequence(lambda n: int(n))
-    cost = factory.RelatedFactory(PlanCostFactory, 'plan')
+    # cost = factory.RelatedFactory(PlanCostFactory, 'plans')
+
+    @factory.post_generation
+    def costs(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of costs were passed in, use them
+            for cost in extracted:
+                self.costs.add(cost)
 
     class Meta:
         model = models.SubscriptionPlan
@@ -71,6 +82,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 class DFS:
     """Object to manage various model instances as needed."""
+
     def __init__(self):
         self._plan_list = None
         self._plan_list_detail = None
@@ -132,10 +144,7 @@ class DFS:
         if self._plan:
             return self._plan
 
-        self._plan = SubscriptionPlanFactory()
-
-        # Update the object attributes
-        self._cost = self._plan.costs.first()
+        self._plan = SubscriptionPlanFactory(costs=[self.cost])
 
         return self._plan
 
@@ -146,8 +155,7 @@ class DFS:
             return self._cost
 
         # Create a plan instance to retrieve the cost from
-        self._plan  # pylint: disable=pointless-statement
-        self._cost = self._plan.costs.first()
+        self._cost = PlanCostFactory()
 
         return self._cost
 
