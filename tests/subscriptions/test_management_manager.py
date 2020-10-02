@@ -3,12 +3,10 @@ from datetime import datetime
 from unittest.mock import patch
 
 import pytest
-
 from django.contrib.auth.models import Group
-
 from subscriptions import models
 from subscriptions.management.commands import _manager
-
+from tests.subscriptions import test_forms
 
 pytestmark = pytest.mark.django_db  # pylint: disable=invalid-name
 
@@ -21,9 +19,9 @@ def create_cost(group):
         group=group
     )
 
-    return models.PlanCost.objects.create(
-        plan=plan, recurrence_period=1, recurrence_unit=models.MONTH, cost='1.00'
-    )
+    return test_forms.create_cost(plan=plan, period=1, unit=models.MONTH,
+                                  cost='1.00'
+                                  )
 
 
 def create_due_subscription(user, group=None):
@@ -52,7 +50,8 @@ def test_manager_process_expired_single_group(django_user_model):
     cost = create_cost(group)
     subscription = models.UserSubscription.objects.create(
         user=user,
-        subscription=cost,
+        plan_cost=cost,
+        subscription_plan=cost.plans.all()[0],
         date_billing_start=datetime(2018, 1, 1, 1, 1, 1),
         date_billing_end=datetime(2018, 12, 31, 1, 1, 1),
         date_billing_last=datetime(2018, 12, 1, 1, 1, 1),
@@ -86,7 +85,8 @@ def test_manager_process_expired_multiple_different_groups(django_user_model):
     cost_1 = create_cost(group_1)
     subscription_1 = models.UserSubscription.objects.create(
         user=user,
-        subscription=cost_1,
+        plan_cost=cost_1,
+        subscription_plan=cost_1.plans.all()[0],
         date_billing_start=datetime(2018, 1, 1, 1, 1, 1),
         date_billing_end=datetime(2018, 12, 31, 1, 1, 1),
         date_billing_last=datetime(2018, 12, 1, 1, 1, 1),
@@ -98,7 +98,8 @@ def test_manager_process_expired_multiple_different_groups(django_user_model):
     cost_2 = create_cost(group_2)
     subscription_2 = models.UserSubscription.objects.create(
         user=user,
-        subscription=cost_2,
+        plan_cost=cost_2,
+        subscription_plan=cost_2.plans.all()[0],
         date_billing_start=datetime(2018, 1, 1, 1, 1, 1),
         date_billing_end=datetime(2018, 12, 31, 1, 1, 1),
         date_billing_last=datetime(2018, 12, 1, 1, 1, 1),

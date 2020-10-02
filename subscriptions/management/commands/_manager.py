@@ -1,7 +1,6 @@
 """Utility/helper functions for Django Flexible Subscriptions."""
 from django.db.models import Q
 from django.utils import timezone
-
 from subscriptions import models
 
 
@@ -48,12 +47,12 @@ class Manager():
         # Get all user subscriptions
         user = subscription.user
         user_subscriptions = user.subscriptions.all()
-        subscription_group = subscription.subscription.plan.group
+        subscription_group = subscription.subscription_plan.group
         group_matches = 0
 
         # Check if there is another subscription for this group
         for user_subscription in user_subscriptions:
-            if user_subscription.subscription.plan.group == subscription_group:
+            if user_subscription.subscription_plan.group == subscription_group:
                 group_matches += 1
 
         # If no other subscription, can remove user from group

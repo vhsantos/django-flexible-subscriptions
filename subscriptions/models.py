@@ -8,7 +8,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
 # Convenience references for units for plan recurrence billing
 # ----------------------------------------------------------------------------
 ONCE = '0'
@@ -251,9 +250,17 @@ class UserSubscription(models.Model):
         on_delete=models.CASCADE,
         related_name='subscriptions',
     )
-    subscription = models.ForeignKey(
+    plan_cost = models.ForeignKey(
         PlanCost,
-        help_text=_('the plan costs and billing frequency for this user'),
+        help_text=_(
+            'the plan costs and billing frequency for this user subscription'),
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
+    subscription_plan = models.ForeignKey(
+        SubscriptionPlan,
+        help_text=_('the subscription plan for this user subscription'),
         null=True,
         on_delete=models.CASCADE,
         related_name='subscriptions'
@@ -354,12 +361,14 @@ class PlanList(models.Model):
     )
     header = models.TextField(
         blank=True,
-        help_text=_('header text to display on the subscription plan list page'),
+        help_text=_(
+            'header text to display on the subscription plan list page'),
         null=True,
     )
     footer = models.TextField(
         blank=True,
-        help_text=_('header text to display on the subscription plan list page'),
+        help_text=_(
+            'footer text to display on the subscription plan list page'),
         null=True,
     )
     active = models.BooleanField(

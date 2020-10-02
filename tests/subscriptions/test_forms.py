@@ -1,12 +1,10 @@
 """Tests for the models module."""
 from datetime import datetime
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 from uuid import uuid4
 
 import pytest
-
 from subscriptions import forms, models
-
 
 pytestmark = pytest.mark.django_db  # pylint: disable=invalid-name
 
@@ -20,9 +18,12 @@ def create_plan(plan_name='1', plan_description='2'):
 
 def create_cost(plan=None, period=1, unit=models.MONTH, cost='1.00'):
     """Creates and returns PlanCost instance."""
-    return models.PlanCost.objects.create(
-        plan=plan, recurrence_period=period, recurrence_unit=unit, cost=cost
+    plan_cost = models.PlanCost.objects.create(
+        recurrence_period=period, recurrence_unit=unit, cost=cost
     )
+    if plan:
+        plan_cost.plans.set([plan])
+    return plan_cost
 
 
 # General Functions
