@@ -127,7 +127,7 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         """Overriding get method to handle inline formset."""
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
-            parent_model=models.SubscriptionPlan,
+            # parent_model=models.SubscriptionPlan,
             model=models.PlanCost,
             form=forms.PlanCostForm,
             can_delete=False,
@@ -149,7 +149,7 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         """Overriding post method to handle inline formsets."""
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
-            parent_model=models.SubscriptionPlan,
+            # parent_model=models.SubscriptionPlan,
             model=models.PlanCost,
             form=forms.PlanCostForm,
             can_delete=False,
