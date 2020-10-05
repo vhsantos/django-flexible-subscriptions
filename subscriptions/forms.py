@@ -164,6 +164,9 @@ class SubscriptionPlanCostForm(forms.Form):
         # Set the last value as the default
         self.fields['plan_cost'].initial = [PLAN_COST_CHOICES[-1][0]]
 
+    # check plan cost exsit and subscription plan exsit
+    # check plan cost belongs to subscription plan - django doc validate form
+
     def clean_plan_cost(self):
         """Validates that UUID is valid and returns model instance."""
         try:

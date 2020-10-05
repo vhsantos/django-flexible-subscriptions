@@ -28,7 +28,7 @@ def create_cost(plan=None, period=1, unit=models.MONTH, cost='1.00'):
 
 def create_subscription(user, cost):
     """Creates and returns a UserSubscription instance."""
-    return models.UserSubscription.objects.create(user=user, subscription=cost)
+    return models.UserSubscription.objects.create(user=user, plan_cost=cost)
 
 
 # SubscriptionListView
@@ -247,24 +247,30 @@ def test_subscription_update_and_success(admin_client, django_user_model):
     """Tests that subscription update and success message works as expected."""
     # Setup initial tag for update
     user = django_user_model.objects.create_user(username='a', password='b')
-    cost = create_cost(plan=create_plan())
-    subscription = create_subscription(user, cost)
+    plan_cost = create_cost(plan=create_plan())
+    subscription = create_subscription(user, plan_cost)
     subscription_count = models.UserSubscription.objects.all().count()
     post_data = {
-        'subscription': cost.id,
+        'plan_cost': plan_cost.id,
         'active': False,
     }
-
+    url = reverse(
+        'dfs_subscription_update',
+        kwargs={'subscription_id': subscription.id}
+    )
+    print('&&&&&&&&', url)
     response = admin_client.post(
-        reverse(
-            'dfs_subscription_update',
-            kwargs={'subscription_id': subscription.id}
-        ),
+        url,
         post_data,
         follow=True,
     )
     messages = list(get_messages(response.wsgi_request))
+    new_user_sub = models.UserSubscription.objects.last()
 
+    print('Response', dir(response))
+    print('Response Data', response.context_data)
+    print('New User', new_user_sub.cancelled)
+    print('@@@@@', messages)
     assert messages[0].tags == 'success'
     assert messages[0].message == 'User subscription successfully updated'
     assert models.UserSubscription.objects.all().count() == subscription_count
