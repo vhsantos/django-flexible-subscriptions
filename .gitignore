@@ -30,3 +30,6 @@ sandbox/*.sqlite3
 
 # Node Modules
 /node_modules/*
+
+#vs-code
+.vscode/*
