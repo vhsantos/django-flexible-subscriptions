@@ -73,8 +73,8 @@ class Manager():
                 subscription (obj): A UserSubscription instance.
         """
         user = subscription.user
-        cost = subscription.subscription
-        plan = cost.plan
+        cost = subscription.plan_cost
+        plan = cost.plans
 
         payment_transaction = self.process_payment(user=user, cost=cost)
 
@@ -112,7 +112,7 @@ class Manager():
                 subscription (obj): A UserSubscription instance.
         """
         user = subscription.user
-        cost = subscription.subscription
+        cost = subscription.plan_cost
 
         payment_transaction = self.process_payment(user=user, cost=cost)
 
@@ -171,12 +171,12 @@ class Manager():
         """
         if transaction_date is None:
             transaction_date = timezone.now()
-
+        print('Subscription', subscription, subscription)
         return models.SubscriptionTransaction.objects.create(
             user=subscription.user,
-            subscription=subscription.subscription,
+            subscription=subscription.plan_cost,
             date_transaction=transaction_date,
-            amount=subscription.subscription.cost,
+            amount=subscription.plan_cost.cost,
         )
 
     def notify_expired(self, subscription):

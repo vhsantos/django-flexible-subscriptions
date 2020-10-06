@@ -867,11 +867,13 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
                 obj: The newly created UserSubscription instance.
         """
         current_date = timezone.now()
+        # TODO: Add a subscription plan
 
         # Add subscription plan to user
-        subscription = models.UserSubscription.objects.create(
+        user_subscription = models.UserSubscription.objects.create(
             user=request_user,
-            subscription=plan_cost,
+            plan_cost=plan_cost,
+            subscription_plan=self.subscription_plan,
             date_billing_start=current_date,
             date_billing_end=None,
             date_billing_last=current_date,
@@ -888,7 +890,7 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
             # No group available to add user to
             pass
 
-        return subscription
+        return user_subscription
 
     def retrieve_transaction_date(self, payment):  # pylint: disable=unused-argument
         """Returns the transaction date from provided payment details.

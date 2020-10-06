@@ -409,7 +409,7 @@ def test_plan_upate_with_same_costs(admin_client):
         'costs-MIN_NUM_FORMS': '0',
         'costs-MAX_NUM_FORMS': '1000',
         'costs-0-id': plan_cost.id,
-        'costs-0-plan': plan_cost.plan.id,
+        'costs-0-plan': plan_cost.plans,
         'costs-0-recurrence_period': plan_cost.recurrence_period,
         'costs-0-recurrence_unit': plan_cost.recurrence_unit,
         'costs-0-cost': plan_cost.cost,
@@ -448,7 +448,7 @@ def test_plan_upate_with_additional_costs(admin_client):
         'costs-MIN_NUM_FORMS': '0',
         'costs-MAX_NUM_FORMS': '1000',
         'costs-0-id': plan_cost.id,
-        'costs-0-plan': plan_cost.plan.id,
+        'costs-0-plan': plan_cost.plans,
         'costs-0-recurrence_period': plan_cost.recurrence_period,
         'costs-0-recurrence_unit': plan_cost.recurrence_unit,
         'costs-0-cost': plan_cost.cost,
@@ -479,7 +479,7 @@ def test_plan_upate_with_delete_costs(admin_client):
     """Tests handling of POST request with deleted plan costs."""
     plan = create_plan()
     plan_cost = create_plan_cost(plan)
-
+    print('PLanCost', plan_cost)
     plan_count = models.SubscriptionPlan.objects.all().count()
     cost_count = models.PlanCost.objects.all().count()
 
@@ -493,7 +493,7 @@ def test_plan_upate_with_delete_costs(admin_client):
         'costs-MIN_NUM_FORMS': '0',
         'costs-MAX_NUM_FORMS': '1000',
         'costs-0-id': plan_cost.id,
-        'costs-0-plan': plan_cost.plan.id,
+        'costs-0-plan': plan_cost.plans,
         'costs-0-recurrence_period': plan_cost.recurrence_period,
         'costs-0-recurrence_unit': plan_cost.recurrence_unit,
         'costs-0-cost': plan_cost.cost,

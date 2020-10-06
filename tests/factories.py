@@ -183,7 +183,8 @@ class DFS:
 
         self._subscription = models.UserSubscription.objects.create(
             user=self._user,
-            subscription=self._cost,
+            plan_cost=self._cost,
+            subscription_plan=self.plan,
             date_billing_start=datetime(2018, 1, 1, 1, 1, 1),
             date_billing_end=None,
             date_billing_last=datetime(2018, 1, 1, 1, 1, 1),
