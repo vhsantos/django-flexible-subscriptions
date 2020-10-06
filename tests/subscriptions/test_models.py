@@ -44,59 +44,59 @@ def test_subscription_plan_minimal_model_creation():
 @pytest.mark.django_db
 def test_subscription_plan_transaction_str():
     "Tests __str__ for the SubscriptionPlan model."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    assert str(plan) == 'Test Plan'
+    assert str(subscription_plan) == 'Test Plan'
 
 
 @pytest.mark.django_db
 def test_subscription_plan_transaction_display_tags_0():
     """Tests display_tags or SubscriptionPlan with 0 tags."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    assert plan.display_tags() == ''
+    assert subscription_plan.display_tags() == ''
 
 
 @pytest.mark.django_db
 def test_subscription_plan_transaction_display_tags_1():
     """Tests display_tags or SubscriptionPlan with 1 tag."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
     tag_1 = models.PlanTag.objects.create(tag='tag 1')
-    plan.tags.add(tag_1)
+    subscription_plan.tags.add(tag_1)
 
-    assert plan.display_tags() == 'tag 1'
+    assert subscription_plan.display_tags() == 'tag 1'
 
 
 @pytest.mark.django_db
 def test_subscription_plan_transaction_display_tags_2():
     """Tests display_tags or SubscriptionPlan with 2 tags."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
     tag_1 = models.PlanTag.objects.create(tag='tag 1')
     tag_2 = models.PlanTag.objects.create(tag='tag 2')
-    plan.tags.add(tag_1)
-    plan.tags.add(tag_2)
+    subscription_plan.tags.add(tag_1)
+    subscription_plan.tags.add(tag_2)
 
-    assert plan.display_tags() == 'tag 1, tag 2'
+    assert subscription_plan.display_tags() == 'tag 1, tag 2'
 
 
 @pytest.mark.django_db
 def test_subscription_plan_transaction_display_tags_3():
     """Tests display_tags or SubscriptionPlan with 3 tags."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
@@ -104,17 +104,17 @@ def test_subscription_plan_transaction_display_tags_3():
     tag_1 = models.PlanTag.objects.create(tag='tag 1')
     tag_2 = models.PlanTag.objects.create(tag='tag 2')
     tag_3 = models.PlanTag.objects.create(tag='tag 3')
-    plan.tags.add(tag_1)
-    plan.tags.add(tag_2)
-    plan.tags.add(tag_3)
+    subscription_plan.tags.add(tag_1)
+    subscription_plan.tags.add(tag_2)
+    subscription_plan.tags.add(tag_3)
 
-    assert plan.display_tags() == 'tag 1, tag 2, tag 3'
+    assert subscription_plan.display_tags() == 'tag 1, tag 2, tag 3'
 
 
 @pytest.mark.django_db
 def test_subscription_plan_transaction_display_tags_4():
     """Tests display_tags or SubscriptionPlan with 4 tags."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
@@ -123,12 +123,12 @@ def test_subscription_plan_transaction_display_tags_4():
     tag_2 = models.PlanTag.objects.create(tag='tag 2')
     tag_3 = models.PlanTag.objects.create(tag='tag 3')
     tag_4 = models.PlanTag.objects.create(tag='tag 4')
-    plan.tags.add(tag_1)
-    plan.tags.add(tag_2)
-    plan.tags.add(tag_3)
-    plan.tags.add(tag_4)
+    subscription_plan.tags.add(tag_1)
+    subscription_plan.tags.add(tag_2)
+    subscription_plan.tags.add(tag_3)
+    subscription_plan.tags.add(tag_4)
 
-    assert plan.display_tags() == 'tag 1, tag 2, tag 3, ...'
+    assert subscription_plan.display_tags() == 'tag 1, tag 2, tag 3, ...'
 
 
 # PlanCost Model
@@ -148,13 +148,12 @@ def test_plan_cost_convenience_unit_reference():
 @pytest.mark.django_db
 def test_plan_cost_minimal_model_creation():
     """Tests minimal requirements of PlanCost model."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
     models.PlanCost.objects.create(
-
         recurrence_period=1,
         recurrence_unit=models.SECOND,
         cost='1.00',
@@ -166,375 +165,375 @@ def test_plan_cost_minimal_model_creation():
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_0():
     """Tests display_recurrent_unit_text for value 0."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.ONCE
     )
 
-    assert cost.display_recurrent_unit_text == 'one-time'
+    assert plan_cost.display_recurrent_unit_text == 'one-time'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_1():
     """Tests display_recurrent_unit_text for value 1."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.SECOND
     )
 
-    assert cost.display_recurrent_unit_text == 'per second'
+    assert plan_cost.display_recurrent_unit_text == 'per second'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_2():
     """Tests display_recurrent_unit_text for value 2."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.MINUTE
     )
 
-    assert cost.display_recurrent_unit_text == 'per minute'
+    assert plan_cost.display_recurrent_unit_text == 'per minute'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_3():
     """Tests display_recurrent_unit_text for value 3."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.HOUR
     )
 
-    assert cost.display_recurrent_unit_text == 'per hour'
+    assert plan_cost.display_recurrent_unit_text == 'per hour'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_4():
     """Tests display_recurrent_unit_text for value 4."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.DAY
     )
 
-    assert cost.display_recurrent_unit_text == 'per day'
+    assert plan_cost.display_recurrent_unit_text == 'per day'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_5():
     """Tests display_recurrent_unit_text for value 5."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.WEEK
     )
 
-    assert cost.display_recurrent_unit_text == 'per week'
+    assert plan_cost.display_recurrent_unit_text == 'per week'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_6():
     """Tests display_recurrent_unit_text for value 6."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.MONTH
     )
 
-    assert cost.display_recurrent_unit_text == 'per month'
+    assert plan_cost.display_recurrent_unit_text == 'per month'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_recurrent_unit_text_7():
     """Tests display_recurrent_unit_text for value 7."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_unit=models.YEAR
     )
 
-    assert cost.display_recurrent_unit_text == 'per year'
+    assert plan_cost.display_recurrent_unit_text == 'per year'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_once_singular():
     """Tests display_billing_frequency_text for singular one-time billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.ONCE
     )
 
-    assert cost.display_billing_frequency_text == 'one-time'
+    assert plan_cost.display_billing_frequency_text == 'one-time'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_once_plural():
     """Tests display_billing_frequency_text for plural one-time billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.ONCE
     )
 
-    assert cost.display_billing_frequency_text == 'one-time'
+    assert plan_cost.display_billing_frequency_text == 'one-time'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_second_singular():
     """Tests display_billing_frequency_text for singular per second billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.SECOND
     )
 
-    assert cost.display_billing_frequency_text == 'per second'
+    assert plan_cost.display_billing_frequency_text == 'per second'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_second_plural():
     """Tests display_billing_frequency_text for plural per second billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.SECOND
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 seconds'
+    assert plan_cost.display_billing_frequency_text == 'every 2 seconds'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_minute_singular():
     """Tests display_billing_frequency_text for singular per minute billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.MINUTE
     )
 
-    assert cost.display_billing_frequency_text == 'per minute'
+    assert plan_cost.display_billing_frequency_text == 'per minute'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_minute_plural():
     """Tests display_billing_frequency_text for plural per minute billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.MINUTE
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 minutes'
+    assert plan_cost.display_billing_frequency_text == 'every 2 minutes'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_hour_singular():
     """Tests display_billing_frequency_text for singular per hour billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.HOUR
     )
 
-    assert cost.display_billing_frequency_text == 'per hour'
+    assert plan_cost.display_billing_frequency_text == 'per hour'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_hour_plural():
     """Tests display_billing_frequency_text for plural per hour billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.HOUR
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 hours'
+    assert plan_cost.display_billing_frequency_text == 'every 2 hours'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_day_singular():
     """Tests display_billing_frequency_text for singular per day billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.DAY
     )
 
-    assert cost.display_billing_frequency_text == 'per day'
+    assert plan_cost.display_billing_frequency_text == 'per day'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_day_plural():
     """Tests display_billing_frequency_text for plural per day billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.DAY
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 days'
+    assert plan_cost.display_billing_frequency_text == 'every 2 days'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_week_singular():
     """Tests display_billing_frequency_text for singular per week billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.WEEK
     )
 
-    assert cost.display_billing_frequency_text == 'per week'
+    assert plan_cost.display_billing_frequency_text == 'per week'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_week_plural():
     """Tests display_billing_frequency_text for plural per week billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.WEEK
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 weeks'
+    assert plan_cost.display_billing_frequency_text == 'every 2 weeks'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_month_singular():
     """Tests display_billing_frequency_text for singular per month billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.MONTH
     )
 
-    assert cost.display_billing_frequency_text == 'per month'
+    assert plan_cost.display_billing_frequency_text == 'per month'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_month_plural():
     """Tests display_billing_frequency_text for plural per month billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.MONTH
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 months'
+    assert plan_cost.display_billing_frequency_text == 'every 2 months'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_year_singular():
     """Tests display_billing_frequency_text for singular per year billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.YEAR
     )
 
-    assert cost.display_billing_frequency_text == 'per year'
+    assert plan_cost.display_billing_frequency_text == 'per year'
 
 
 @pytest.mark.django_db
 def test_plan_cost_display_billing_frequency_text_year_plural():
     """Tests display_billing_frequency_text for plural per year billing."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
 
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=2, recurrence_unit=models.YEAR
     )
 
-    assert cost.display_billing_frequency_text == 'every 2 years'
+    assert plan_cost.display_billing_frequency_text == 'every 2 years'
 
 
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_seconds():
     """Tests next_billing_datetime with 'seconds'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.SECOND
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2018, 1, 1, 1, 1, 2)
 
@@ -542,15 +541,15 @@ def test_plan_cost_next_billing_datetime_seconds():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_minutes():
     """Tests next_billing_datetime with 'minutes'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.MINUTE
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2018, 1, 1, 1, 2, 1)
 
@@ -558,15 +557,15 @@ def test_plan_cost_next_billing_datetime_minutes():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_hours():
     """Tests next_billing_datetime with 'hours'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.HOUR
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2018, 1, 1, 2, 1, 1)
 
@@ -574,15 +573,15 @@ def test_plan_cost_next_billing_datetime_hours():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_days():
     """Tests next_billing_datetime with 'days'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.DAY
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2018, 1, 2, 1, 1, 1)
 
@@ -590,15 +589,15 @@ def test_plan_cost_next_billing_datetime_days():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_weeks():
     """Tests next_billing_datetime with 'weeks'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.WEEK
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2018, 1, 8, 1, 1, 1)
 
@@ -606,15 +605,15 @@ def test_plan_cost_next_billing_datetime_weeks():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_months():
     """Tests next_billing_datetime with 'months'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.MONTH
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2018, 1, 31, 11, 30, 0, 520000)
 
@@ -622,15 +621,15 @@ def test_plan_cost_next_billing_datetime_months():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_12_months():
     """Tests next_billing_datetime with 'months'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=12, recurrence_unit=models.MONTH
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2019, 1, 1, 6, 48, 55, 240000)
 
@@ -638,15 +637,15 @@ def test_plan_cost_next_billing_datetime_12_months():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_48_months():
     """Tests next_billing_datetime with 12 'months'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=48, recurrence_unit=models.MONTH
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2022, 1, 1, 0, 12, 37, 960000)
 
@@ -654,15 +653,15 @@ def test_plan_cost_next_billing_datetime_48_months():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_years():
     """Tests next_billing_datetime with 48 'months'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.YEAR
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2019, 1, 1, 6, 50, 13)
 
@@ -670,15 +669,15 @@ def test_plan_cost_next_billing_datetime_years():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_4_years():
     """Tests next_billing_datetime with 4 'years'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=4, recurrence_unit=models.YEAR
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing == datetime(2022, 1, 1, 0, 17, 49)
 
@@ -686,15 +685,15 @@ def test_plan_cost_next_billing_datetime_4_years():
 @pytest.mark.django_db
 def test_plan_cost_next_billing_datetime_once():
     """Tests next_billing_datetime with period of 'once'."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='This is a test plan',
     )
-    cost = models.PlanCost.objects.create(
+    plan_cost = models.PlanCost.objects.create(
         recurrence_period=1, recurrence_unit=models.ONCE
     )
     current = datetime(2018, 1, 1, 1, 1, 1)
-    next_billing = cost.next_billing_datetime(current)
+    next_billing = plan_cost.next_billing_datetime(current)
 
     assert next_billing is None
 
@@ -726,7 +725,7 @@ def test_plan_list_str():
 @pytest.mark.django_db
 def test_plan_list_details_minimal_model_creation():
     """Tests minimal requirements of PlanListDetails model."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='A test plan',
     )
@@ -734,7 +733,7 @@ def test_plan_list_details_minimal_model_creation():
         title='Test Title',
     )
     models.PlanListDetail.objects.create(
-
+        plan=subscription_plan,
         plan_list=plan_list,
     )
 
@@ -744,7 +743,7 @@ def test_plan_list_details_minimal_model_creation():
 @pytest.mark.django_db
 def test_plan_list_details_str_():
     """Tests __str__ for the PlanListDetails model."""
-    plan = models.SubscriptionPlan.objects.create(
+    subscription_plan = models.SubscriptionPlan.objects.create(
         plan_name='Test Plan',
         plan_description='A test plan',
     )
@@ -752,7 +751,7 @@ def test_plan_list_details_str_():
         title='Test Title',
     )
     plan_list_details = models.PlanListDetail.objects.create(
-
+        plan=subscription_plan,
         plan_list=plan_list,
     )
 
