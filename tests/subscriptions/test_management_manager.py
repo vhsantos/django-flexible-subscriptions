@@ -10,6 +10,11 @@ from tests.subscriptions import test_forms
 
 pytestmark = pytest.mark.django_db  # pylint: disable=invalid-name
 
+# TODO: remove commented out code.
+# TODO: views.py 860 - fix failing tests?
+# TODO: rename to create_cost to create_plan_cost
+# TODO: Move functions to utils and import
+
 
 def create_cost(subscription_plan):
     """Creates and returns a PlanCost instance."""
@@ -36,7 +41,7 @@ def create_subscription_plan(group=None):
     )
 
 
-def create_due_subscription(user, group=None):
+def create_due_user_subscription(user, group=None):
     """Creates a standard UserSubscription object due for billing."""
     subscription_plan = create_subscription_plan(group)
     cost = create_cost(subscription_plan)
@@ -331,7 +336,7 @@ def test_manager_process_due_billing_dates(django_user_model):
         Patching the timezone module to ensure consistent test results.
     """
     user = django_user_model.objects.create_user(username='a', password='b')
-    user_subscription = create_due_subscription(user)
+    user_subscription = create_due_user_subscription(user)
     user_subscription_id = user_subscription.id
 
     manager = _manager.Manager()
@@ -352,7 +357,7 @@ def test_manager_process_due_billing_dates(django_user_model):
 def test_manager_process_due_payment_error(django_user_model):
     """Tests handling of due subscription payment error."""
     user = django_user_model.objects.create_user(username='a', password='b')
-    user_subscription = create_due_subscription(user)
+    user_subscription = create_due_user_subscription(user)
     user_subscription_id = user_subscription.id
 
     manager = _manager.Manager()
@@ -450,7 +455,7 @@ def test_manager_process_subscriptions_with_due(django_user_model):
     group = Group.objects.create(name='test')
     user_count = group.user_set.all().count()
 
-    user_subscription = create_due_subscription(user, group=group)
+    user_subscription = create_due_user_subscription(user, group=group)
     user_subscription_id = user_subscription.id
 
     manager = _manager.Manager()
@@ -476,7 +481,7 @@ def test_manager_record_transaction_without_date(django_user_model):
     transaction_count = models.SubscriptionTransaction.objects.all().count()
 
     user = django_user_model.objects.create_user(username='a', password='b')
-    user_subscription = create_due_subscription(user)
+    user_subscription = create_due_user_subscription(user)
 
     manager = _manager.Manager()
     transaction = manager.record_transaction(user_subscription)
@@ -492,7 +497,7 @@ def test_manager_record_transaction_with_date(django_user_model):
     transaction_count = models.SubscriptionTransaction.objects.all().count()
 
     user = django_user_model.objects.create_user(username='a', password='b')
-    user_subscription = create_due_subscription(user)
+    user_subscription = create_due_user_subscription(user)
     transaction_date = datetime(2018, 1, 2, 1, 1, 1)
 
     manager = _manager.Manager()
