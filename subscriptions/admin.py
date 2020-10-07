@@ -20,6 +20,7 @@ class PlanCostLinkInline(admin.TabularInline):
     """Inline admin class for the PlanCostLink model."""
     model = models.PlanCostLink
     fields = (
+        'plan'
         'cost',
     )
     extra = 0

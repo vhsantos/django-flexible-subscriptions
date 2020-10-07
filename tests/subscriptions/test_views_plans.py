@@ -624,7 +624,7 @@ def test_plan_update_invalid_cost_forms(admin_client):
         'costs-MIN_NUM_FORMS': '0',
         'costs-MAX_NUM_FORMS': '1000',
         'costs-0-id': plan_cost.id,
-        # 'costs-0-plan': plan_cost.plan.id,
+        'costs-0-plans': plan_cost.plans,
         'costs-0-recurrence_period': 'a',
         'costs-0-recurrence_unit': plan_cost.recurrence_unit,
         'costs-0-cost': plan_cost.cost,

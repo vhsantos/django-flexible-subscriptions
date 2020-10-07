@@ -230,7 +230,7 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
             parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
+            model=models.PlanCost.plans.through,
             form=forms.PlanCostForm,
             can_delete=True,
             extra=1,
