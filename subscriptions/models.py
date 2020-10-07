@@ -121,8 +121,8 @@ class PlanCost(models.Model):
     )
     plans = models.ManyToManyField(
         SubscriptionPlan,
+        through='PlanCostLink',
         blank=True,
-        null=True,
         help_text=_('the subscription plan for these cost details'),
         related_name='costs',
     )
@@ -153,6 +153,9 @@ class PlanCost(models.Model):
 
     class Meta:
         ordering = ('recurrence_unit', 'recurrence_period', 'cost',)
+
+    def __str__(self):
+        return f"{self.slug} ({self.cost} @ {self.recurrence_period} {self.display_recurrent_unit_text})"
 
     @property
     def display_recurrent_unit_text(self):
@@ -233,6 +236,11 @@ class PlanCost(models.Model):
             return None
 
         return current + delta
+
+
+class PlanCostLink(models.Model):
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
+    cost = models.ForeignKey(PlanCost, on_delete=models.CASCADE)
 
 
 class UserSubscription(models.Model):

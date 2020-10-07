@@ -16,6 +16,31 @@ from subscriptions.conf import SETTINGS
 #     )
 #     extra = 0
 
+class PlanCostLinkInline(admin.TabularInline):
+    """Inline admin class for the PlanCostLink model."""
+    model = models.PlanCostLink
+    fields = (
+        'cost',
+    )
+    extra = 0
+
+
+class PlanCostAdmin(admin.ModelAdmin):
+    """Admin class for the PlanCost model."""
+    fields = (
+        'slug',
+        'recurrence_period',
+        'recurrence_unit',
+        'cost',
+    )
+    list_display = (
+        'slug',
+        'recurrence_period',
+        'recurrence_unit',
+        'cost',
+    )
+    # prepopulated_fields = {'slug': ('plan_name',)}
+
 
 class SubscriptionPlanAdmin(admin.ModelAdmin):
     """Admin class for the SubscriptionPlan model."""
@@ -27,7 +52,7 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
         'tags',
         'grace_period',
     )
-    # inlines = [PlanCostInline]
+    inlines = [PlanCostLinkInline]
     list_display = (
         'plan_name',
         'group',
@@ -61,6 +86,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
 
 if SETTINGS['enable_admin']:
+    admin.site.register(models.PlanCost, PlanCostAdmin)
     admin.site.register(models.SubscriptionPlan, SubscriptionPlanAdmin)
     admin.site.register(models.UserSubscription, UserSubscriptionAdmin)
     admin.site.register(models.SubscriptionTransaction, TransactionAdmin)
