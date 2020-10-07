@@ -250,9 +250,16 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
     def post(self, request, *args, **kwargs):
         """Overriding post method to handle inline formsets."""
         # Setup the formset for PlanCost
-        PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
+        # PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
+        #     parent_model=models.SubscriptionPlan,
+        #     model=models.PlanCost,
+        #     form=forms.PlanCostForm,
+        #     can_delete=True,
+        #     extra=1,
+        # )
+        PlanCostFormSet = inlineformset_factory(
             parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
+            model=models.PlanCost.plans.through,
             form=forms.PlanCostForm,
             can_delete=True,
             extra=1,
@@ -921,9 +928,9 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
 
         return models.SubscriptionTransaction.objects.create(
             user=subscription.user,
-            subscription=subscription.subscription,
+            subscription=subscription.plan_cost,
             date_transaction=transaction_date,
-            amount=subscription.subscription.cost,
+            amount=subscription.plan_cost.cost,
         )
 
 

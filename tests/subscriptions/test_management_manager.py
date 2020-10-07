@@ -432,14 +432,13 @@ def test_manager_process_subscriptions_with_new(django_user_model):
     )
     print('User Subscription:', user_subscription.subscription_plan.group)
     print('Group:', dir(group))
-    user_subscription_id = user_subscription.id
+    subscription_id = user_subscription.id
+    print('User Subscription Look Up', group.user_set.all())
 
     manager = _manager.Manager()
     manager.process_subscriptions()
 
-    user_subscription = models.UserSubscription.objects.get(
-        id=user_subscription_id)
-    print('User Subscription Look Up', group.user_set.all())
+    user_subscription = models.UserSubscription.objects.get(id=subscription_id)
     assert group.user_set.all().count() == user_count + 1
     assert user_subscription.active is True
     assert user_subscription.cancelled is False
@@ -504,7 +503,7 @@ def test_manager_record_transaction_with_date(django_user_model):
     transaction = manager.record_transaction(
         user_subscription,
         transaction_date
-        )
+    )
 
     assert models.SubscriptionTransaction.objects.all().count() == (
         transaction_count + 1
