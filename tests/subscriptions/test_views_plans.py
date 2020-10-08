@@ -608,6 +608,7 @@ def test_plan_update_invalid_form(admin_client):
 @pytest.mark.django_db
 def test_plan_update_invalid_cost_forms(admin_client):
     """Tests handling of invalid costforms submission during update."""
+    # TODO: rename function create_subscription_plan
     plan = create_plan()
     plan_cost = create_plan_cost(plan)
 
@@ -624,9 +625,6 @@ def test_plan_update_invalid_cost_forms(admin_client):
         'costs-MIN_NUM_FORMS': '0',
         'costs-MAX_NUM_FORMS': '1000',
         'costs-0-id': plan_cost.id,
-        'costs-0-plans': plan_cost.plans,
-        'costs-0-recurrence_period': 'a',
-        'costs-0-recurrence_unit': plan_cost.recurrence_unit,
         'costs-0-cost': plan_cost.cost,
         'costs-0-DELETE': False,
     }

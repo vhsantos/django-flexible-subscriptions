@@ -231,7 +231,7 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
             parent_model=models.SubscriptionPlan,
             model=models.PlanCost.plans.through,
-            form=forms.PlanCostForm,
+            form=forms.PlanCostLinkForm,
             can_delete=True,
             extra=1,
         )
@@ -260,7 +260,7 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
         PlanCostFormSet = inlineformset_factory(
             parent_model=models.SubscriptionPlan,
             model=models.PlanCost.plans.through,
-            form=forms.PlanCostForm,
+            form=forms.PlanCostLinkForm,
             can_delete=True,
             extra=1,
         )
@@ -626,7 +626,13 @@ class SubscribeList(abstract.TemplateView):
 
         # Retrieve the plan details for template display
         details = models.PlanListDetail.objects.filter(
-            plan_list=plan_list, plan__costs__isnull=False
+            plan_list=plan_list,
+            # TODO: if plan_lists are going to be used,
+            # we need to figure out how to check that a plan
+            # has an attached cost.
+            # NOTE: check offers/management cmd
+            # plan__costs__exists=1,
+            # plan__costs__isnull=False
         ).order_by('order')
 
         if plan_list:
@@ -1000,11 +1006,13 @@ class SubscribeCancelView(LoginRequiredMixin, abstract.DetailView):
 
     def post(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         """Updates a subscription's details to cancel it."""
-        subscription = self.get_object()
-        subscription.date_billing_end = copy(subscription.date_billing_next)
-        subscription.date_billing_next = None
-        subscription.cancelled = True
-        subscription.save()
+        user_subscription = self.get_object()
+        user_subscription.date_billing_end = copy(
+            user_subscription.date_billing_next
+            )
+        user_subscription.date_billing_next = None
+        user_subscription.cancelled = True
+        user_subscription.save()
 
         messages.success(self.request, self.success_message)
 

@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from django.utils import timezone
 
 from subscriptions.conf import SETTINGS
-from subscriptions.models import SubscriptionPlan, PlanCost
+from subscriptions.models import SubscriptionPlan, PlanCost, PlanCostLink
 
 
 def assemble_cc_years():
@@ -34,6 +34,13 @@ class PlanCostForm(ModelForm):
     class Meta:
         model = PlanCost
         fields = ['recurrence_period', 'recurrence_unit', 'cost']
+
+
+class PlanCostLinkForm(ModelForm):
+    """Form to use with inlineformset_factory and SubscriptionPlanForm."""
+    class Meta:
+        model = PlanCostLink
+        fields = ['cost']
 
 
 class PaymentForm(forms.Form):
