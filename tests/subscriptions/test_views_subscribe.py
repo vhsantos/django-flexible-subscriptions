@@ -754,7 +754,6 @@ def test_cancel_post_updates_instance(client, dfs):
         ),
         follow=True
     )
-
     subscription = models.UserSubscription.objects.get(id=subscription_id)
     messages = list(get_messages(response.wsgi_request))
 

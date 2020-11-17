@@ -74,8 +74,7 @@ class Manager():
         """
         user = subscription.user
         cost = subscription.plan_cost
-        plan = cost.plans
-
+        plan = subscription.subscription_plan
         payment_transaction = self.process_payment(user=user, cost=cost)
 
         if payment_transaction:

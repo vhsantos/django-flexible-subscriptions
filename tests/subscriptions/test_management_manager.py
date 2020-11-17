@@ -228,8 +228,7 @@ def test_manager_process_new_with_group(django_user_model):
     user_subscription_id = user_subscription.id
     user_subscription = models.UserSubscription.objects.get(
         id=user_subscription_id)
-    print('subscription:@@ ', dir(group.user_set))
-    print('subscription:@@ ', group.user_set.all())
+
     assert group.user_set.all().count() == user_count + 1
     assert user_subscription.active is True
     assert user_subscription.cancelled is False

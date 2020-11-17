@@ -127,10 +127,10 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         """Overriding get method to handle inline formset."""
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
-            # parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
-            form=forms.PlanCostForm,
-            can_delete=False,
+            parent_model=models.SubscriptionPlan,
+            model=models.PlanCost.plans.through,
+            form=forms.PlanCostLinkForm,
+            can_delete=True,
             extra=1,
         )
 
@@ -149,10 +149,10 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         """Overriding post method to handle inline formsets."""
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
-            # parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
-            form=forms.PlanCostForm,
-            can_delete=False,
+            parent_model=models.SubscriptionPlan,
+            model=models.PlanCost.plans.through,
+            form=forms.PlanCostLinkForm,
+            can_delete=True,
             extra=1,
         )
 
@@ -1009,7 +1009,7 @@ class SubscribeCancelView(LoginRequiredMixin, abstract.DetailView):
         user_subscription = self.get_object()
         user_subscription.date_billing_end = copy(
             user_subscription.date_billing_next
-            )
+        )
         user_subscription.date_billing_next = None
         user_subscription.cancelled = True
         user_subscription.save()
