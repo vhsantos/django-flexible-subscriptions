@@ -11,7 +11,7 @@ pytestmark = pytest.mark.django_db  # pylint: disable=invalid-name
 
 
 def create_plan_cost(plan=None,  unit=models.MONTH, cost='1.00'):
-    pc = models.PlanCost.objects.create()
+    pc = models.PlanCost.objects.create(recurrence_unit=unit, cost=cost)
     if plan:
         pc.plans.add(plan)
     return pc
@@ -22,7 +22,7 @@ def test_subscribe_add_exists_at_desired_location(admin_client):
     plan = models.SubscriptionPlan.objects.create(
         plan_name='a', plan_description='b'
     )
-    cost = create_plan_cost()
+    cost = create_plan_cost(plan)
     response = admin_client.post(
         reverse('dfs_subscribe_add'), {'plan_id': plan.id, 'plan_cost': cost}
     )
@@ -35,7 +35,7 @@ def test_subscribe_add_exists_at_desired_url(admin_client):
     plan = models.SubscriptionPlan.objects.create(
         plan_name='a', plan_description='b'
     )
-    cost = create_plan_cost()
+    cost = create_plan_cost(plan)
     response = admin_client.post(
         '/subscribe/add/', {'plan_id': plan.id, 'plan_cost': cost}
     )

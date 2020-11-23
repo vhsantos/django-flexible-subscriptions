@@ -1,8 +1,10 @@
 """Factories to create Subscription Plans."""
 # pylint: disable=unnecessary-lambda
 from datetime import datetime
+from decimal import Decimal
 
 import factory
+
 
 from django.contrib.auth import get_user_model
 
@@ -13,7 +15,7 @@ class PlanCostFactory(factory.django.DjangoModelFactory):
     """Factory to create PlanCost model instance."""
     recurrence_period = factory.Sequence(lambda n: int(n))
     recurrence_unit = models.DAY
-    cost = factory.Sequence(lambda n: int(n))
+    cost = factory.Sequence(lambda n: Decimal(n+1))
 
     class Meta:
         model = models.PlanCost
@@ -21,10 +23,14 @@ class PlanCostFactory(factory.django.DjangoModelFactory):
 
 class SubscriptionPlanFactory(factory.django.DjangoModelFactory):
     """Factory to create SubscriptionPlan and PlanCost models."""
+
+    class Params:
+        new_costs = 0
+
     plan_name = factory.Sequence(lambda n: 'Plan {}'.format(n))
     plan_description = factory.Sequence(lambda n: 'Description {}'.format(n))
     grace_period = factory.sequence(lambda n: int(n))
-    # cost = factory.RelatedFactory(PlanCostFactory, 'plans')
+    # costs = factory.RelatedFactory(PlanCostFactory, 'plans')
 
     @factory.post_generation
     def costs(self, create, extracted, **kwargs):
@@ -33,12 +39,26 @@ class SubscriptionPlanFactory(factory.django.DjangoModelFactory):
             return
 
         if extracted:
+            if isinstance(extracted, int):
+                for _ in range(extracted):
+                    self.costs.add(PlanCostFactory())
+
             # A list of costs were passed in, use them
             for cost in extracted:
                 self.costs.add(cost)
+            return
 
     class Meta:
         model = models.SubscriptionPlan
+
+
+class PlanCostLinkFactory(factory.django.DjangoModelFactory):
+    """Factory to create PlanCost model instance."""
+    plan = factory.SubFactory(SubscriptionPlanFactory)
+    cost = factory.SubFactory(PlanCostFactory)
+
+    class Meta:
+        model = models.PlanCostLink
 
 
 class PlanListDetailFactory(factory.django.DjangoModelFactory):
@@ -151,6 +171,7 @@ class DFS:
     @property
     def cost(self):
         """Creates a Cost instance and associated models."""
+        plan = PlanCostFactory.create()
         if self._cost:
             return self._cost
 
@@ -180,6 +201,8 @@ class DFS:
         # Create PlanCost if needed
         if not self._cost:
             self.plan  # pylint: disable=pointless-statement
+        if not self._cost:
+            print('No Cost Exist')
 
         self._subscription = models.UserSubscription.objects.create(
             user=self._user,

@@ -40,7 +40,7 @@ class PlanCostLinkForm(ModelForm):
     """Form to use with inlineformset_factory and SubscriptionPlanForm."""
     class Meta:
         model = PlanCostLink
-        fields = ['cost']
+        fields = ['plan', 'cost']
 
 
 class PaymentForm(forms.Form):
@@ -155,6 +155,7 @@ class SubscriptionPlanCostForm(forms.Form):
         """
         costs = kwargs.pop('subscription_plan').costs.all()
         PLAN_COST_CHOICES = []
+        print('Form poped cost', costs)
 
         for cost in costs:
             radio_text = '{} {}'.format(
