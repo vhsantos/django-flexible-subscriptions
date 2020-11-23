@@ -170,7 +170,6 @@ class Manager():
         """
         if transaction_date is None:
             transaction_date = timezone.now()
-        print('Subscription', subscription, subscription)
         return models.SubscriptionTransaction.objects.create(
             user=subscription.user,
             subscription=subscription.plan_cost,

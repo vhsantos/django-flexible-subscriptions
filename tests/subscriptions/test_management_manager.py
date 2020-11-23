@@ -429,10 +429,7 @@ def test_manager_process_subscriptions_with_new(django_user_model):
         active=False,
         cancelled=False,
     )
-    print('User Subscription:', user_subscription.subscription_plan.group)
-    print('Group:', dir(group))
     subscription_id = user_subscription.id
-    print('User Subscription Look Up', group.user_set.all())
 
     manager = _manager.Manager()
     manager.process_subscriptions()

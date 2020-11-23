@@ -201,8 +201,6 @@ class DFS:
         # Create PlanCost if needed
         if not self._cost:
             self.plan  # pylint: disable=pointless-statement
-        if not self._cost:
-            print('No Cost Exist')
 
         self._subscription = models.UserSubscription.objects.create(
             user=self._user,

@@ -163,7 +163,7 @@ def test_subscription_create_and_success(admin_client, django_user_model):
     post_data = {
         'user': user.id,
         'plan_cost': plan_cost.id,
-        'subscription_plan': subscription_plan,
+        'subscription_plan': subscription_plan.id,
     }
 
     response = admin_client.post(
@@ -282,8 +282,7 @@ def test_subscription_update_and_success(admin_client, django_user_model):
         plan_cost,
         subscription_plan
     )
-    print('User Sub', user_subscription.plan_cost)
-    print('Plan cost', plan_cost)
+
     user_subs_count = models.UserSubscription.objects.all().count()
 
     post_data = {
@@ -300,14 +299,13 @@ def test_subscription_update_and_success(admin_client, django_user_model):
         post_data,
         follow=True,
     )
-    print('Response', response.content.decode())
 
     messages = list(get_messages(response.wsgi_request))
 
     assert messages[0].tags == 'success'
     assert messages[0].message == 'User subscription successfully updated'
-    # assert models.UserSubscription.objects.all().count() == user_subs_count
-    # assert models.UserSubscription.objects.last().active is False
+    assert models.UserSubscription.objects.all().count() == user_subs_count
+    assert models.UserSubscription.objects.last().active is False
 
 
 # SubscriptionDeleteView

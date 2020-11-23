@@ -415,8 +415,6 @@ def test_plan_upate_with_same_costs(admin_client):
 
     plan_count = models.SubscriptionPlan.objects.all().count()
     cost_count = models.PlanCost.objects.all().count()
-    print(f'Plan {plan_cost.plans}')
-    print(f'Plan cost {plan_cost.cost}')
 
     response = admin_client.get(
         reverse('dfs_plan_update', kwargs={'plan_id': plan.id}),
@@ -449,7 +447,6 @@ def test_plan_upate_with_same_costs(admin_client):
     )
 
     messages = list(get_messages(response.wsgi_request))
-    print(f'Message {response.content.decode()}')
 
     assert messages[0].message == 'Subscription plan successfully updated'
     assert models.SubscriptionPlan.objects.all().count() == plan_count
@@ -472,7 +469,6 @@ def test_plan_upate_with_additional_costs(admin_client):
         reverse('dfs_plan_update', kwargs={'plan_id': plan.id}),
         follow=True,
     )
-    # print(f'{response.content.decode()}')
 
     post_data = {
         'plan_id': plan.id,
@@ -504,9 +500,6 @@ def test_plan_upate_with_additional_costs(admin_client):
     )
 
     messages = list(get_messages(response.wsgi_request))
-    print(f' Messages {messages}')
-    # print(f' Response {dir(response)}')
-    # print(f' Response {response.context}')
 
     assert messages[0].message == 'Subscription plan successfully updated'
     assert models.SubscriptionPlan.objects.all().count() == plan_count
@@ -523,7 +516,6 @@ def test_plan_upate_with_delete_costs(admin_client):
         return
     plan = create_plan()
     plan_cost = create_plan_cost(plan)
-    print('PlanCost', plan_cost)
     plan_count = models.SubscriptionPlan.objects.all().count()
     cost_count = models.PlanCost.objects.all().count()
 
@@ -531,9 +523,6 @@ def test_plan_upate_with_delete_costs(admin_client):
         reverse('dfs_plan_update', kwargs={'plan_id': plan.id}),
         follow=True,
     )
-    print(f'Plan Cost {plan_cost.id}')
-    print(f'Plan Count {plan_count}')
-    print(f'Cost Count {cost_count}')
 
     post_data = {
         'plan_id': plan.id,

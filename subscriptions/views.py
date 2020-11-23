@@ -161,10 +161,7 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         cost_forms = PlanCostFormSet(self.request.POST)
 
         if form.is_valid() and cost_forms.is_valid():
-            print('Valid Post')
             return self.form_valid(form, cost_forms)
-        else:
-            print('Invalid Post')
 
         return self.form_invalid(form, cost_forms)
 
@@ -274,8 +271,6 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
 
         if form.is_valid() and cost_forms.is_valid():
             return self.form_valid(form, cost_forms)
-        else:
-            print('Invalid Form')
 
         return self.form_invalid(form, cost_forms)
 
@@ -742,7 +737,6 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
         """
         # Get the subscription plan for this POST
         self.subscription_plan = self.get_object()
-        print('Sub PLan Cost', self.subscription_plan.costs.count())
 
         # Determine POST action and direct to proper function
         post_action = request.POST.get('action', None)
@@ -1005,7 +999,6 @@ class SubscribeCancelView(LoginRequiredMixin, abstract.DetailView):
             user=self.request.user,
             id=self.kwargs['subscription_id'],
         )
-        print(f'OBJ {obj.plan_cost.cost}')
         return obj
 
     def get_success_url(self):

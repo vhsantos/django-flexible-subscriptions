@@ -155,7 +155,6 @@ class SubscriptionPlanCostForm(forms.Form):
         """
         costs = kwargs.pop('subscription_plan').costs.all()
         PLAN_COST_CHOICES = []
-        print('Form poped cost', costs)
 
         for cost in costs:
             radio_text = '{} {}'.format(
