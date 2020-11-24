@@ -128,9 +128,9 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
             parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
-            form=forms.PlanCostForm,
-            can_delete=False,
+            model=models.PlanCost.plans.through,
+            form=forms.PlanCostLinkForm,
+            can_delete=True,
             extra=1,
         )
 
@@ -150,9 +150,9 @@ class PlanCreateView(PermissionRequiredMixin, abstract.CreateView):
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
             parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
-            form=forms.PlanCostForm,
-            can_delete=False,
+            model=models.PlanCost.plans.through,
+            form=forms.PlanCostLinkForm,
+            can_delete=True,
             extra=1,
         )
 
@@ -230,8 +230,8 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
         # Setup the formset for PlanCost
         PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
             parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
-            form=forms.PlanCostForm,
+            model=models.PlanCost.plans.through,
+            form=forms.PlanCostLinkForm,
             can_delete=True,
             extra=1,
         )
@@ -248,12 +248,10 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
         )
 
     def post(self, request, *args, **kwargs):
-        """Overriding post method to handle inline formsets."""
-        # Setup the formset for PlanCost
-        PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
+        PlanCostFormSet = inlineformset_factory(
             parent_model=models.SubscriptionPlan,
-            model=models.PlanCost,
-            form=forms.PlanCostForm,
+            model=models.PlanCost.plans.through,
+            form=forms.PlanCostLinkForm,
             can_delete=True,
             extra=1,
         )
@@ -351,7 +349,7 @@ class SubscriptionCreateView(
     permission_required = 'subscriptions.subscriptions'
     raise_exception = True
     context_object_name = 'subscription'
-    fields = ['user', 'subscription', 'date_billing_start', 'date_billing_end']
+    fields = ['user', 'plan_cost', 'subscription_plan', 'date_billing_start', 'date_billing_end']
     success_message = 'User subscription successfully added'
     success_url = reverse_lazy('dfs_subscription_list')
     template_name = 'subscriptions/subscription_create.html'
@@ -366,7 +364,7 @@ class SubscriptionUpdateView(
     raise_exception = True
     context_object_name = 'subscription'
     fields = [
-        'subscription', 'date_billing_start', 'date_billing_end',
+        'plan_cost', 'subscription_plan', 'date_billing_start', 'date_billing_end',
         'date_billing_last', 'date_billing_next', 'active', 'cancelled'
     ]
     pk_url_kwarg = 'subscription_id'
@@ -619,7 +617,13 @@ class SubscribeList(abstract.TemplateView):
 
         # Retrieve the plan details for template display
         details = models.PlanListDetail.objects.filter(
-            plan_list=plan_list, plan__costs__isnull=False
+            plan_list=plan_list,
+            # TODO: if plan_lists are going to be used,
+            # we need to figure out how to check that a plan
+            # has an attached cost.
+            # NOTE: check offers/management cmd
+            # plan__costs__exists=1,
+            # plan__costs__isnull=False
         ).order_by('order')
 
         if plan_list:
@@ -867,11 +871,13 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
                 obj: The newly created UserSubscription instance.
         """
         current_date = timezone.now()
+        # TODO: Add a subscription plan
 
         # Add subscription plan to user
-        subscription = models.UserSubscription.objects.create(
+        user_subscription = models.UserSubscription.objects.create(
             user=request_user,
-            subscription=plan_cost,
+            plan_cost=plan_cost,
+            subscription_plan=self.subscription_plan,
             date_billing_start=current_date,
             date_billing_end=None,
             date_billing_last=current_date,
@@ -888,7 +894,7 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
             # No group available to add user to
             pass
 
-        return subscription
+        return user_subscription
 
     def retrieve_transaction_date(self, payment):  # pylint: disable=unused-argument
         """Returns the transaction date from provided payment details.
@@ -919,9 +925,9 @@ class SubscribeView(LoginRequiredMixin, abstract.TemplateView):
 
         return models.SubscriptionTransaction.objects.create(
             user=subscription.user,
-            subscription=subscription.subscription,
+            subscription=subscription.plan_cost,
             date_transaction=transaction_date,
-            amount=subscription.subscription.cost,
+            amount=subscription.plan_cost.cost,
         )
 
 
@@ -979,11 +985,12 @@ class SubscribeCancelView(LoginRequiredMixin, abstract.DetailView):
 
     def get_object(self, queryset=None):
         """Overrides get_object to restrict to logged in user."""
-        return get_object_or_404(
+        obj = get_object_or_404(
             self.model,
             user=self.request.user,
             id=self.kwargs['subscription_id'],
         )
+        return obj
 
     def get_success_url(self):
         """Returns the success URL."""
@@ -991,11 +998,13 @@ class SubscribeCancelView(LoginRequiredMixin, abstract.DetailView):
 
     def post(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         """Updates a subscription's details to cancel it."""
-        subscription = self.get_object()
-        subscription.date_billing_end = copy(subscription.date_billing_next)
-        subscription.date_billing_next = None
-        subscription.cancelled = True
-        subscription.save()
+        user_subscription = self.get_object()
+        user_subscription.date_billing_end = copy(
+            user_subscription.date_billing_next
+        )
+        user_subscription.date_billing_next = None
+        user_subscription.cancelled = True
+        user_subscription.save()
 
         messages.success(self.request, self.success_message)
 

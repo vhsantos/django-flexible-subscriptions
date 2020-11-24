@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     # Local Apps
     'subscriptions',
+    'django_extensions'
 ]
 
 # DJANGO MIDDLEWARE

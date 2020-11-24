@@ -42,12 +42,12 @@
         <div class="table-body">
           <div>
             <span class="table-title">{% trans "Subscription" %}</span>
-            {{ subscription.subscription.plan }}
+            {{ subscription.plan_cost.plans }}
           </div>
           <div>
             <span class="table-title">{% trans "Payment details" %}</span>
-            {{ subscription.subscription.cost|currency }}
-            {{ subscription.subscription.display_billing_frequency_text }}
+            {{ subscription.plan_cost.cost|currency }}
+            {{ subscription.plan_cost.display_billing_frequency_text }}
           </div>
           <div>
             <span class="table-title">{% trans "Next billing date" %}</span>

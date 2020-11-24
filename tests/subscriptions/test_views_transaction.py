@@ -1,13 +1,11 @@
-"""Tests for the django-flexible-subscriptions PlanTag views."""
-from decimal import Decimal
-import pytest
-
-from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
-from django.urls import reverse
-from django.utils import timezone
-
 from subscriptions import models
+from django.utils import timezone
+from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+import pytest
+from decimal import Decimal
+"""Tests for the django-flexible-subscriptions PlanTag views."""
 
 
 def create_plan(plan_name='1', plan_description='2'):
@@ -19,9 +17,12 @@ def create_plan(plan_name='1', plan_description='2'):
 
 def create_cost(plan=None, period=1, unit=models.MONTH, cost='1.00'):
     """Creates and returns PlanCost instance."""
-    return models.PlanCost.objects.create(
-        plan=plan, recurrence_period=period, recurrence_unit=unit, cost=cost
+    pc = models.PlanCost.objects.create(
+        recurrence_period=period, recurrence_unit=unit, cost=cost
     )
+    if plan:
+        pc.plans.add(plan)
+    return pc
 
 
 def create_transaction(user, cost, amount='1.00'):

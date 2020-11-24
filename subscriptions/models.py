@@ -8,7 +8,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
 # Convenience references for units for plan recurrence billing
 # ----------------------------------------------------------------------------
 ONCE = '0'
@@ -120,10 +119,11 @@ class PlanCost(models.Model):
         primary_key=True,
         verbose_name='ID',
     )
-    plan = models.ForeignKey(
+    plans = models.ManyToManyField(
         SubscriptionPlan,
+        through='PlanCostLink',
+        blank=True,
         help_text=_('the subscription plan for these cost details'),
-        on_delete=models.CASCADE,
         related_name='costs',
     )
     slug = models.SlugField(
@@ -153,6 +153,9 @@ class PlanCost(models.Model):
 
     class Meta:
         ordering = ('recurrence_unit', 'recurrence_period', 'cost',)
+
+    def __str__(self):
+        return f"{self.slug} ({self.cost} @ {self.recurrence_period} {self.display_recurrent_unit_text})"
 
     @property
     def display_recurrent_unit_text(self):
@@ -235,6 +238,11 @@ class PlanCost(models.Model):
         return current + delta
 
 
+class PlanCostLink(models.Model):
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
+    cost = models.ForeignKey(PlanCost, on_delete=models.CASCADE)
+
+
 class UserSubscription(models.Model):
     """Details of a user's specific subscription."""
     id = models.UUIDField(
@@ -250,9 +258,17 @@ class UserSubscription(models.Model):
         on_delete=models.CASCADE,
         related_name='subscriptions',
     )
-    subscription = models.ForeignKey(
+    plan_cost = models.ForeignKey(
         PlanCost,
-        help_text=_('the plan costs and billing frequency for this user'),
+        help_text=_(
+            'the plan costs and billing frequency for this user subscription'),
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
+    subscription_plan = models.ForeignKey(
+        SubscriptionPlan,
+        help_text=_('the subscription plan for this user subscription'),
         null=True,
         on_delete=models.CASCADE,
         related_name='subscriptions'
@@ -353,12 +369,14 @@ class PlanList(models.Model):
     )
     header = models.TextField(
         blank=True,
-        help_text=_('header text to display on the subscription plan list page'),
+        help_text=_(
+            'header text to display on the subscription plan list page'),
         null=True,
     )
     footer = models.TextField(
         blank=True,
-        help_text=_('header text to display on the subscription plan list page'),
+        help_text=_(
+            'footer text to display on the subscription plan list page'),
         null=True,
     )
     active = models.BooleanField(

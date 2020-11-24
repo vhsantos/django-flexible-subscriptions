@@ -1,7 +1,6 @@
 """Utility/helper functions for Django Flexible Subscriptions."""
 from django.db.models import Q
 from django.utils import timezone
-
 from subscriptions import models
 
 
@@ -48,12 +47,12 @@ class Manager():
         # Get all user subscriptions
         user = subscription.user
         user_subscriptions = user.subscriptions.all()
-        subscription_group = subscription.subscription.plan.group
+        subscription_group = subscription.subscription_plan.group
         group_matches = 0
 
         # Check if there is another subscription for this group
         for user_subscription in user_subscriptions:
-            if user_subscription.subscription.plan.group == subscription_group:
+            if user_subscription.subscription_plan.group == subscription_group:
                 group_matches += 1
 
         # If no other subscription, can remove user from group
@@ -74,9 +73,8 @@ class Manager():
                 subscription (obj): A UserSubscription instance.
         """
         user = subscription.user
-        cost = subscription.subscription
-        plan = cost.plan
-
+        cost = subscription.plan_cost
+        plan = subscription.subscription_plan
         payment_transaction = self.process_payment(user=user, cost=cost)
 
         if payment_transaction:
@@ -113,7 +111,7 @@ class Manager():
                 subscription (obj): A UserSubscription instance.
         """
         user = subscription.user
-        cost = subscription.subscription
+        cost = subscription.plan_cost
 
         payment_transaction = self.process_payment(user=user, cost=cost)
 
@@ -172,12 +170,11 @@ class Manager():
         """
         if transaction_date is None:
             transaction_date = timezone.now()
-
         return models.SubscriptionTransaction.objects.create(
             user=subscription.user,
-            subscription=subscription.subscription,
+            subscription=subscription.plan_cost,
             date_transaction=transaction_date,
-            amount=subscription.subscription.cost,
+            amount=subscription.plan_cost.cost,
         )
 
     def notify_expired(self, subscription):

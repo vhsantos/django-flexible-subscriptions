@@ -98,6 +98,8 @@ def test_subscribe_list_get_context_data(admin_client, dfs):  # pylint: disable=
     assert 'details' in response.context
 
 
+# This is being skipped because this functionality will not be implemented now
+@pytest.mark.skip()
 def test_subscribe_list_exclude_plan_with_no_cost(admin_client, dfs):  # pylint: disable=unused-argument
     """Tests that a plan with no cost is excluded."""
     # Create plan list and details
@@ -754,7 +756,6 @@ def test_cancel_post_updates_instance(client, dfs):
         ),
         follow=True
     )
-
     subscription = models.UserSubscription.objects.get(id=subscription_id)
     messages = list(get_messages(response.wsgi_request))
 

@@ -61,9 +61,9 @@
             </div>
             <div>
               <span class="table-title">{% trans "Plan" %}</span>
-              {{ subscription.subscription.plan }}<br>
-              {{ subscription.subscription.cost|currency }}
-              {{ subscription.subscription.display_billing_frequency_text }}
+              {{ subscription.plan_cost.plans }}<br>
+              {{ subscription.plan_cost.cost|currency }}
+              {{ subscription.plan_cost.display_billing_frequency_text }}
             </div>
             <div>
               <span class="table-title">{% trans "Billing start date" %}</span>

@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from django.utils import timezone
 
 from subscriptions.conf import SETTINGS
-from subscriptions.models import SubscriptionPlan, PlanCost
+from subscriptions.models import SubscriptionPlan, PlanCost, PlanCostLink
 
 
 def assemble_cc_years():
@@ -34,6 +34,13 @@ class PlanCostForm(ModelForm):
     class Meta:
         model = PlanCost
         fields = ['recurrence_period', 'recurrence_unit', 'cost']
+
+
+class PlanCostLinkForm(ModelForm):
+    """Form to use with inlineformset_factory and SubscriptionPlanForm."""
+    class Meta:
+        model = PlanCostLink
+        fields = ['plan', 'cost']
 
 
 class PaymentForm(forms.Form):
@@ -163,6 +170,9 @@ class SubscriptionPlanCostForm(forms.Form):
 
         # Set the last value as the default
         self.fields['plan_cost'].initial = [PLAN_COST_CHOICES[-1][0]]
+
+    # check plan cost exsit and subscription plan exsit
+    # check plan cost belongs to subscription plan - django doc validate form
 
     def clean_plan_cost(self):
         """Validates that UUID is valid and returns model instance."""
