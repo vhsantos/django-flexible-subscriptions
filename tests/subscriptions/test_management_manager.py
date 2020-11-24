@@ -10,11 +10,6 @@ from tests.subscriptions import test_forms
 
 pytestmark = pytest.mark.django_db  # pylint: disable=invalid-name
 
-# TODO: remove commented out code.
-# TODO: views.py 860 - fix failing tests?
-# TODO: rename to create_cost to create_plan_cost
-# TODO: Move functions to utils and import
-
 
 def create_cost(subscription_plan):
     """Creates and returns a PlanCost instance."""

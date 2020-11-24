@@ -248,15 +248,6 @@ class PlanUpdateView(PermissionRequiredMixin, abstract.UpdateView):
         )
 
     def post(self, request, *args, **kwargs):
-        """Overriding post method to handle inline formsets."""
-        # Setup the formset for PlanCost
-        # PlanCostFormSet = inlineformset_factory(  # pylint: disable=invalid-name
-        #     parent_model=models.SubscriptionPlan,
-        #     model=models.PlanCost,
-        #     form=forms.PlanCostForm,
-        #     can_delete=True,
-        #     extra=1,
-        # )
         PlanCostFormSet = inlineformset_factory(
             parent_model=models.SubscriptionPlan,
             model=models.PlanCost.plans.through,

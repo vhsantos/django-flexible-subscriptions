@@ -28,7 +28,6 @@ def create_plan(plan_name='1', plan_description='2'):
 def create_plan_cost(plan=None, rec_period=1, rec_unit=models.MONTH, cost='1.00'):
     """Creates and returns a PlanCost instance."""
     pc = models.PlanCost.objects.create(
-        # plan=plan,
         recurrence_period=rec_period,
         recurrence_unit=rec_unit,
         cost=cost,
@@ -662,7 +661,6 @@ def test_plan_update_invalid_form(admin_client):
 @pytest.mark.django_db
 def test_plan_update_invalid_cost_forms(admin_client):
     """Tests handling of invalid costforms submission during update."""
-    # TODO: rename function create_subscription_plan
     plan = create_plan()
     plan_cost = create_plan_cost(plan)
 

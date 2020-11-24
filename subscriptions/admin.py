@@ -5,17 +5,6 @@ from subscriptions import models
 from subscriptions.conf import SETTINGS
 
 
-# class PlanCostInline(admin.TabularInline):
-#     """Inline admin class for the PlanCost model."""
-#     model = models.PlanCost
-#     fields = (
-#         'slug',
-#         'recurrence_period',
-#         'recurrence_unit',
-#         'cost',
-#     )
-#     extra = 0
-
 class PlanCostLinkInline(admin.TabularInline):
     """Inline admin class for the PlanCostLink model."""
     model = models.PlanCostLink
@@ -40,7 +29,6 @@ class PlanCostAdmin(admin.ModelAdmin):
         'recurrence_unit',
         'cost',
     )
-    # prepopulated_fields = {'slug': ('plan_name',)}
 
 
 class SubscriptionPlanAdmin(admin.ModelAdmin):
